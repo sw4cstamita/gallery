@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeri Foto Warna-Warni</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="title animate__animated animate__fadeInDown">Galeri Foto</h1>
+        <p class="subtitle animate__animated animate__fadeInDown animate__delay-1s">Unggah dan bagikan momen berhargamu</p>
+        <div class="theme-toggle">
+          <input type="checkbox" id="theme-switch" class="theme-switch">
+          <label for="theme-switch" class="theme-label">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+            <span class="theme-ball"></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- Upload Section -->
+      <section class="upload-section" id="upload-section">
+        <div class="upload-box" id="drop-zone">
+          <i class="fas fa-images upload-icon"></i>
+          <h3>Seret & Jatuhkan foto di sini</h3>
+          <p>atau</p>
+          <input type="file" id="file-input" name="image" accept="image/*" multiple hidden />
+          <button id="upload-btn" class="upload-btn btn-primary">
+            <i class="fas fa-cloud-upload-alt"></i> Pilih Foto
+          </button>
+          <p class="file-types">JPEG, PNG (Maks. 5MB per foto)</p>
+        </div>
+
+        <div class="progress-container" id="progress-container" role="progressbar" aria-hidden="true">
+          <div class="progress-info">
+            <span id="progress-text">0%</span>
+            <span id="upload-count">0 foto terunggah</span>
+          </div>
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </section>
+
+      <!-- Filter Controls -->
+      <section class="filter-section">
+        <div class="filter-controls">
+          <div class="filter-scroll">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="nature">
+              <i class="fas fa-mountain"></i> Alam
+            </button>
+            <button class="filter-btn" data-filter="people">
+              <i class="fas fa-user-friends"></i> Orang
+            </button>
+            <button class="filter-btn" data-filter="urban">
+              <i class="fas fa-city"></i> Perkotaan
+            </button>
+            <button class="filter-btn" data-filter="abstract">
+              <i class="fas fa-shapes"></i> Abstrak
+            </button>
+            <button class="filter-btn" data-filter="favorites">
+              <i class="fas fa-heart"></i> Favorit
+            </button>
+          </div>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Cari foto...">
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="gallery-section">
+        <div class="gallery-actions">
+          <div class="sort-control">
+            <label for="sort-select"><i class="fas fa-sort"></i> Urutkan:</label>
+            <select id="sort-select">
+              <option value="newest">Terbaru</option>
+              <option value="oldest">Terlama</option>
+              <option value="name-asc">Nama (A-Z)</option>
+              <option value="name-desc">Nama (Z-A)</option>
+            </select>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+            <button class="view-btn" data-view="masonry"><i class="fas fa-th-large"></i></button>
+            <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+          </div>
+        </div>
+        
+        <div class="gallery" id="gallery" aria-live="polite">
+          <!-- Foto akan ditampilkan di sini -->
+          <div class="empty-state animate__animated animate__fadeIn">
+            <i class="fas fa-camera-retro"></i>
+            <h3>Galeri Kosong</h3>
+            <p>Mulailah dengan mengunggah foto pertama Anda</p>
+          </div>
+        </div>
+        
+        <button id="load-more" class="btn-secondary">
+          <i class="fas fa-plus"></i> Muat Lebih Banyak
+        </button>
+      </section>
+    </main>
+
+    <!-- MODAL VIEWER -->
+    <div class="modal" id="modal" role="dialog" aria-modal="true">
+      <div class="modal-content">
+        <span class="close-btn" id="close-modal">&times;</span>
+        <div class="modal-image-container">
+          <img class="modal-img" id="modal-img" alt="Preview foto penuh" />
+          <button class="modal-nav-btn prev-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+          <button class="modal-nav-btn next-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-caption" id="modal-caption"></div>
+          <div class="modal-actions">
+            <button class="modal-action-btn favorite-btn" id="favorite-btn">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="modal-action-btn download-btn" id="download-btn">
+              <i class="fas fa-download"></i>
+            </button>
+            <button class="modal-action-btn share-btn" id="share-btn">
+              <i class="fas fa-share-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-camera-retro"></i>
+          <span>Galeri Foto</span>
+        </div>
+        <div class="footer-links">
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+      </div>
+      <p class="footer-copyright">© 2025 Galeri Foto Kreatif | Dibuat dengan <i class="fas fa-heart"></i> untuk Anda</p>
+    </footer>
+  </div>
+
+  <!-- Supabase SDK (CDN, jika belum pakai bundler) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
